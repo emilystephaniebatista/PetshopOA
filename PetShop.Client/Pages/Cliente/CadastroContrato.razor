@@ -1,0 +1,49 @@
+﻿@page  "/Cliente/CadastroContrato"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="card m-3">
+    <h4 class="card-header">Cadastro Contrato</h4>
+    <div class="card-body">
+        <EditForm Model="@Contrato" OnValidSubmit="HandleValidSubmit" @onreset="HandleReset">
+            <DataAnnotationsValidator />
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Numero Contrato</label>
+                    <InputNumber @bind-Value="Contrato.Numerocontrato" class="form-control" />
+                    <ValidationMessage For="@(() => Contrato.Numerocontrato)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Numero de identificação</label>
+                    <InputNumber @bind-Value="Contrato.FuncionarioId" class="form-control" />
+                    <ValidationMessage For="@(() => Contrato.FuncionarioId)" />
+                </div>
+            </div>
+         
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code { private Contrato Contrato = new Contrato();
+    private EditContext editContext { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        var teste = await Http.PostAsJsonAsync("/api/Contratos", Contrato);
+        NavigationManager.NavigateTo("/Contrato/List");
+
+    }
+
+    private void HandleReset()
+    {
+        Contrato = new Contrato();
+        editContext = new EditContext(Contrato);
+    } }

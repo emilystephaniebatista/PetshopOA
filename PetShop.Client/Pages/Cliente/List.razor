@@ -1,0 +1,49 @@
+﻿@page  "/Cliente/List"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Listagem de clientes</h3>
+
+<div class="card-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Numero de Identificacao</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ClienteList)
+            {
+<tr>
+    <td>@item.Nome</td>
+    <td>@String.Format("{0, 0:C2}", @item.Numeroidentificacao)</td>
+    <td>
+        <a href="/Cliente/Edit/@item.Id.ToString()"><button class="btn btn-success">Editar</button></a>
+        <button class="btn btn-danger" @onclick="@(() => DeleteCliente(item.Id))">Delete</button>
+    </td>
+</tr>            }
+        </tbody>
+    </table>
+</div>
+
+@code { private List<Cliente> ClienteList = new List<Cliente>();
+
+            protected override async Task OnInitializedAsync()
+            {
+
+                var Clientes = await Http.GetFromJsonAsync<List<Cliente>>("/api/Clientes");
+                foreach (var item in Clientes)
+                {
+                    ClienteList.Add(item);
+                }
+            }
+
+            private async Task DeleteCliente(int itemId)
+            {
+                //call controller
+                await Http.DeleteAsync("/api/Clientes/" + itemId);
+                NavigationManager.NavigateTo("/Cliente/List", true);
+            } }

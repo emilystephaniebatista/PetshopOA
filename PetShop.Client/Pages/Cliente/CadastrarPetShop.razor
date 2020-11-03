@@ -1,0 +1,56 @@
+﻿@page  "/Cliente/Petshop"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="card m-3">
+    <h4 class="card-header">Cadastro PetShop</h4>
+    <div class="card-body">
+        <EditForm Model="@Petshop" OnValidSubmit="HandleValidSubmit" @onreset="HandleReset">
+            <DataAnnotationsValidator />
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Código do petshop</label>
+                    <InputNumber @bind-Value="Petshop.Id" class="form-control" />
+                    <ValidationMessage For="@(() => Petshop.Id)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Nome do petshop</label>
+                    <InputText @bind-Value="Petshop.Nome" class="form-control" />
+                    <ValidationMessage For="@(() => Petshop.Nome)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Endereço do petshop</label>
+                    <InputText @bind-Value="Petshop.Endereco" class="form-control" />
+                    <ValidationMessage For="@(() => Petshop.Endereco)" />
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+
+        </EditForm>
+    </div>
+</div>
+
+@code { private Petshop Petshop = new Petshop();
+    private EditContext editContext { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        var teste = await Http.PostAsJsonAsync("/api/Petshops", Petshop);
+        NavigationManager.NavigateTo("/Petshop/List");
+
+    }
+
+    private void HandleReset()
+    {
+        Petshop = new Petshop();
+        editContext = new EditContext(Petshop);
+    } }

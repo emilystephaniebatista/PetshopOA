@@ -1,0 +1,57 @@
+﻿@page  "/Cliente/Edit"
+@page "/Cliente/Edit/{Item}"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="card m-3">
+    <h4 class="card-header">Editar Cliente</h4>
+    <div class="card-body">
+        <EditForm Model="@Cliente" OnValidSubmit="HandleValidSubmit" @onreset="HandleReset">
+            <DataAnnotationsValidator />
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Nome</label>
+                    <InputText @bind-Value="Cliente.Nome" class="form-control" />
+                    <ValidationMessage For="@(() => Cliente.Nome)" />
+                </div>
+                <div class="form-group col">
+                    <label>Numero de identificação</label>
+                    <InputText @bind-Value="Cliente.Numeroidentificacao" class="form-control" />
+                    <ValidationMessage For="@(() => Cliente.Numeroidentificacao)" />
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code { private Cliente Cliente = new Cliente();
+
+            [Parameter]
+            public string Item { get; set; }
+            private EditContext editContext { get; set; }
+
+            protected override async Task OnInitializedAsync()
+            {
+                var itemId = Item;
+                Cliente = await Http.GetFromJsonAsync<Cliente>($"/api/Clientes/{itemId}");
+                editContext = new EditContext(Cliente);
+            }
+
+            private async Task HandleValidSubmit()
+            {
+                await Http.PutAsJsonAsync($"/api/Clientes/{Item}", Cliente);
+                NavigationManager.NavigateTo("/Cliente/List");
+
+            }
+
+            private void HandleReset()
+            {
+                Cliente = new Cliente();
+                editContext = new EditContext(Cliente);
+            } }

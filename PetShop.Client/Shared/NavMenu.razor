@@ -1,0 +1,57 @@
+﻿<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">PetShop.Client</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/Cliente/List">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Clientes
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/Cliente/Cadastrar">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Cadastrar
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/Cliente/CadastroFuncionario">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Cadastrar Funcionário
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/Cliente/Petshop">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Cadastrar PetShop
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/Servico/CadastrarServico">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Cadastrar Serviço
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/Cliente/CadastroContrato">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Cadastrar Contrato
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

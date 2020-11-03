@@ -1,0 +1,121 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PetshopOA.Shared;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Petshop.Server.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ClientesController : ControllerBase
+    {
+        private readonly AppDbContext _context;
+
+        public ClientesController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/Clientes
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
+        {
+            return await _context.Clientes.ToListAsync();
+        }
+
+        // GET: api/Clientes/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Cliente>> GetCliente(int id)
+        {
+            var cliente = await _context.Clientes.FindAsync(id);
+
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            return cliente;
+        }
+
+        // PUT: api/Clientes/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCliente(int id, ClienteDto cliente)
+        {
+
+            var cliente2 = new Cliente
+            {
+                Nome = cliente.Nome,
+                Numeroidentificacao = cliente.Numeroidentificacao,
+                PetshopId = int.Parse(cliente.PetshopId)
+            };
+
+            if (id != cliente2.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(cliente2).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ClienteExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Clientes
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<ActionResult<ClienteDto>> PostCliente(ClienteDto cliente)
+        {
+            var cliente2 = new Cliente
+            {
+                Nome = cliente.Nome,
+                Numeroidentificacao = cliente.Numeroidentificacao,
+                PetshopId = int.Parse(cliente.PetshopId)
+            };
+            _context.Clientes.Add(cliente2);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetCliente", new { id = cliente.Id }, cliente);
+        }
+
+        // DELETE: api/Clientes/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Cliente>> DeleteCliente(int id)
+        {
+            var cliente = await _context.Clientes.FindAsync(id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            _context.Clientes.Remove(cliente);
+            await _context.SaveChangesAsync();
+
+            return cliente;
+        }
+
+        private bool ClienteExists(int id)
+        {
+            return _context.Clientes.Any(e => e.Id == id);
+        }
+    }
+}
