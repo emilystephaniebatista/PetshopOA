@@ -10,6 +10,7 @@
             <DataAnnotationsValidator />
 
             <div class="form-row">
+                
                 <div class="form-group col">
                     <label>Nome</label>
                     <InputText @bind-Value="Cliente.Nome" class="form-control" />
@@ -29,7 +30,8 @@
                     <option value="0">Selecione o petshop</option>
                     @foreach (var petshop in petshopList)
                     {
-            <option value="@petshop.Id">@petshop.Nome</option>                    }
+                        <option value="@petshop.Id">@petshop.Nome</option>                    
+                    }
                 </InputSelect>
             </div>
 
@@ -55,7 +57,7 @@
 
     private EditContext editContext { get; set; }
     private List<Petshop> petshopList = new List<Petshop>();
-    private PetshopOA.Shared.PetshopDto petshopDto = new PetshopOA.Shared.PetshopDto();
+    
 
     public string Text { get; set; }
 

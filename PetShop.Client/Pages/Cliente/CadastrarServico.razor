@@ -20,16 +20,24 @@
             <div class="form-row">
                 <div class="form-group col">
                     <label>Código funcionário</label>
-                    <InputNumber @bind-Value="Servico.FuncionarioId" class="form-control" />
-                    <ValidationMessage For="@(() => Servico.FuncionarioId)" />
+                    <InputSelect @bind-Value="Servico.FuncionarioId" class="form-control">
+                        <option value="0">Selecione o funcionario</option>
+                        @foreach (var funcionario in funcionarioList)
+                        {
+                    <option value="@funcionario.Id">@funcionario.Nome</option>                    }
+                    </InputSelect>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group col">
                     <label>Código Cliente</label>
-                    <InputNumber @bind-Value="Servico.ClienteId" class="form-control" />
-                    <ValidationMessage For="@(() => Servico.ClienteId)" />
+                    <InputSelect @bind-Value="Servico.ClienteId" class="form-control">
+                        <option value="0">Selecione o cliente</option>
+                        @foreach (var cliente in clienteList)
+                        {
+                    <option value="@cliente.Id">@cliente.Nome</option>}
+                    </InputSelect>
                 </div>
             </div>
             <div class="text-center">
@@ -40,8 +48,11 @@
     </div>
 </div>
 
-@code { private Servico Servico = new Servico();
+@code { private ServicoDto Servico = new ServicoDto();
     private EditContext editContext { get; set; }
+    private List<Funcionario> funcionarioList = new List<Funcionario>();
+    private List<Cliente> clienteList = new List<Cliente>();
+    private PetshopOA.Shared.FuncionarioDto funcionarioDto = new PetshopOA.Shared.FuncionarioDto();
 
     private async Task HandleValidSubmit()
     {
@@ -52,6 +63,23 @@
 
     private void HandleReset()
     {
-        Servico = new Servico();
+        Servico = new ServicoDto();
         editContext = new EditContext(Servico);
-    } }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var funcionario = await Http.GetFromJsonAsync<List<Funcionario>>("/api/Funcionarios");
+        foreach (var item in funcionario)
+        {
+            funcionarioList.Add(item);
+        }
+
+        var cliente = await Http.GetFromJsonAsync<List<Cliente>>("/api/Clientes");
+        foreach (var item in cliente)
+        {
+            clienteList.Add(item);
+        }
+    }
+
+    }

@@ -46,14 +46,22 @@ namespace Petshop.Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutServico(int id, Servico servico)
+        public async Task<IActionResult> PutServico(int id, ServicoDto servico)
         {
-            if (id != servico.Id)
+
+            var servico2 = new Servico
+            {
+                Descricao = servico.Descricao,
+                FuncionarioId =  int.Parse(servico.FuncionarioId),
+                ClienteId = int.Parse(servico.ClienteId)
+            };
+
+            if (id != servico2.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(servico).State = EntityState.Modified;
+            _context.Entry(servico2).State = EntityState.Modified;
 
             try
             {
@@ -78,12 +86,18 @@ namespace Petshop.Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Servico>> PostServico(Servico servico)
+        public async Task<ActionResult<Servico>> PostServico(ServicoDto servico)
         {
-            _context.Servico.Add(servico);
+            var servico2 = new Servico
+            {
+                Descricao = servico.Descricao,
+                FuncionarioId = int.Parse(servico.FuncionarioId),
+                ClienteId = int.Parse(servico.ClienteId)
+            };
+            _context.Servico.Add(servico2);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetServico", new { id = servico.Id }, servico);
+            return CreatedAtAction("GetServico", new { id = servico2.Id }, servico2);
         }
 
         // DELETE: api/Servicoes/5
