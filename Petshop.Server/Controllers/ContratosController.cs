@@ -46,14 +46,20 @@ namespace Petshop.Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutContrato(int id, Contrato contrato)
+        public async Task<IActionResult> PutContrato(int id, ContratoDto contrato)
         {
-            if (id != contrato.Id)
+            var contrato2 = new Contrato
+            {
+                Numerocontrato = contrato.Numerocontrato,
+                FuncionarioId = contrato.Numerocontrato
+            };
+
+            if (id != contrato2.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(contrato).State = EntityState.Modified;
+            _context.Entry(contrato2).State = EntityState.Modified;
 
             try
             {
@@ -78,12 +84,17 @@ namespace Petshop.Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Contrato>> PostContrato(Contrato contrato)
+        public async Task<ActionResult<Contrato>> PostContrato(ContratoDto contrato)
         {
-            _context.Contrato.Add(contrato);
+            var contrato2 = new Contrato
+            {
+                Numerocontrato = contrato.Numerocontrato,
+                FuncionarioId = contrato.Numerocontrato
+            };
+            _context.Contrato.Add(contrato2);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetContrato", new { id = contrato.Id }, contrato);
+            return CreatedAtAction("GetContrato", new { id = contrato2.Id }, contrato2);
         }
 
         // DELETE: api/Contratoes/5

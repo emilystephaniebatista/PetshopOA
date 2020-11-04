@@ -10,6 +10,6 @@ namespace PetshopOA.Shared
         public int Id { get; set; }
 
         public int Numerocontrato { get; set; }        
-        public int FuncionarioId { get; set; }
+        public string FuncionarioId { get; set; }
     }
 }

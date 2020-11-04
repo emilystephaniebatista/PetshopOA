@@ -18,9 +18,13 @@
             </div>
             <div class="form-row">
                 <div class="form-group col">
-                    <label>Numero de identificação</label>
-                    <InputNumber @bind-Value="Contrato.FuncionarioId" class="form-control" />
-                    <ValidationMessage For="@(() => Contrato.FuncionarioId)" />
+                    <label>Funcionario Id</label>
+                    <InputSelect @bind-Value="Contrato.FuncionarioId" class="form-control">
+                        <option value="0">Selecione o funcionario</option>
+                        @foreach (var funcionario in funcionarioList)
+                        {
+                    <option value="@funcionario.Id">@funcionario.Nome</option>}
+                    </InputSelect>
                 </div>
             </div>
          
@@ -32,8 +36,9 @@
     </div>
 </div>
 
-@code { private Contrato Contrato = new Contrato();
+@code { private ContratoDto Contrato = new ContratoDto();
     private EditContext editContext { get; set; }
+    private List<Funcionario> funcionarioList = new List<Funcionario>();
 
     private async Task HandleValidSubmit()
     {
@@ -44,6 +49,17 @@
 
     private void HandleReset()
     {
-        Contrato = new Contrato();
+        Contrato = new ContratoDto();
         editContext = new EditContext(Contrato);
-    } }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var funcionario = await Http.GetFromJsonAsync<List<Funcionario>>("/api/Funcionarios");
+        foreach (var item in funcionario)
+        {
+            funcionarioList.Add(item);
+        }
+    }
+
+    }
