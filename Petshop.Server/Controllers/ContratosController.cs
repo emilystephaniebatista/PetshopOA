@@ -51,7 +51,7 @@ namespace Petshop.Server.Controllers
             var contrato2 = new Contrato
             {
                 Numerocontrato = contrato.Numerocontrato,
-                FuncionarioId = contrato.Numerocontrato
+                FuncionarioId = int.Parse(contrato.FuncionarioId)
             };
 
             if (id != contrato2.Id)
@@ -89,7 +89,7 @@ namespace Petshop.Server.Controllers
             var contrato2 = new Contrato
             {
                 Numerocontrato = contrato.Numerocontrato,
-                FuncionarioId = contrato.Numerocontrato
+                FuncionarioId = int.Parse(contrato.FuncionarioId)
             };
             _context.Contrato.Add(contrato2);
             await _context.SaveChangesAsync();
