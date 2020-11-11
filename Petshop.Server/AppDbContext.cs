@@ -26,5 +26,11 @@ namespace Petshop.Server
                        .WithOne(c => c.Funcionario)
                        .HasForeignKey<Contrato>(c => c.FuncionarioId);
         }
+
+        //Essa parte é para fazer o relacionamento um para um
+        public DbSet<PetshopOA.Shared.Usuario> Usuario { get; set; }
+
+        //Essa parte é para fazer o relacionamento um para um
+        public DbSet<PetshopOA.Shared.Autorizacao> Autorizacao { get; set; }
     }
 }
