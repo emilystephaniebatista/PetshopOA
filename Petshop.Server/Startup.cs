@@ -47,7 +47,7 @@ namespace Petshop.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                endpoints.MapFallbackToFile("Usuario/CadastrarUsuario");
+                endpoints.MapFallbackToFile("index.html");
             });
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
@@ -59,7 +59,7 @@ namespace Petshop.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                endpoints.MapFallbackToFile("Usuario/CadastrarUsuario");
+                endpoints.MapFallbackToFile("index.html");
             });
         }
     }

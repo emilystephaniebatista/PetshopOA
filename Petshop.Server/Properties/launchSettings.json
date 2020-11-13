@@ -3,7 +3,7 @@
     "windowsAuthentication": false, 
     "anonymousAuthentication": true, 
     "iisExpress": {
-      "applicationUrl": "http://localhost:51509",
+      "applicationUrl": "http://localhost:51509/Usuario/CadastrarUsuario",
       "sslPort": 44372
     }
   },
