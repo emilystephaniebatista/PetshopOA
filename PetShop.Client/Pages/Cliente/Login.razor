@@ -20,7 +20,7 @@
             <div class="form-row">
                 <div class="form-group col">
                     <label>Senha</label>
-                    <InputText @bind-Value="Usuario.Senha" class="form-control" />
+                    <InputText type="password" @bind-Value="Usuario.Senha" class="form-control" />
                     <ValidationMessage For="@(() => Usuario.Senha)" />
                 </div>
             </div>
