@@ -25,6 +25,27 @@ namespace Petshop.Server
                        .HasOne(f => f.Contrato)
                        .WithOne(c => c.Funcionario)
                        .HasForeignKey<Contrato>(c => c.FuncionarioId);
+
+            Seed(modelBuilder); 
+            base.OnModelCreating(modelBuilder);
+            
+        }
+        //inserção do seed: é necessário ter alguns valores pré cadastrados e por isso é implementado o seed
+        public void Seed(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<Autorizacao>().HasData(new Autorizacao
+            {
+                Id = 1,
+            });
+
+            modelBuilder.Entity<Usuario>().HasData(new Usuario
+            {
+                Id = 1,
+                Email = "emily@teste.com.br",
+                Senha = "123456",
+                AutorizacaoId = 1
+            }); 
+            
+            
         }
 
         //Essa parte é para fazer o relacionamento um para um
