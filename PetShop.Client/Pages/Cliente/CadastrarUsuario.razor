@@ -20,10 +20,19 @@
             <div class="form-row">
                 <div class="form-group col">
                     <label>Senha</label>
-                    <InputText @bind-Value="Usuario.Senha" class="form-control" />
+                    <InputText type="password" @bind-Value="Usuario.Senha" class="form-control" />
                     <ValidationMessage For="@(() => Usuario.Senha)" />
                 </div>
             </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Senha</label>
+                    <InputText type="number" @bind-Value="Usuario.AutorizacaoId" class="form-control" />
+                    <ValidationMessage For="@(() => Usuario.AutorizacaoId)" />
+                </div>
+            </div>
+
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Salvar</button>
                 <button type="reset" class="btn btn-secondary">Cancel</button>
@@ -38,6 +47,7 @@
 
     private EditContext editContext { get; set; }
     private List<Petshop> petshopList = new List<Petshop>();
+    
 
 
     public string Text { get; set; }
@@ -58,11 +68,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var petshop = await Http.GetFromJsonAsync<List<Petshop>>("/api/Petshops");
-        foreach (var item in petshop)
-        {
-            petshopList.Add(item);
-        }
     }
 
 
