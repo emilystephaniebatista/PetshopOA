@@ -1,10 +1,10 @@
-﻿@page  "/Usuario/CadastrarUsuario"
+﻿@page  "/"
 @using System.Net.Http
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
 <div class="card m-3">
-    <h4 class="card-header">Cadastro Usuario</h4>
+    <h4 class="card-header">Login</h4>
     <div class="card-body">
         <EditForm Model="@Usuario" OnValidSubmit="HandleValidSubmit" @onreset="HandleReset">
             <DataAnnotationsValidator />
@@ -12,14 +12,14 @@
             <div class="form-row">
 
                 <div class="form-group col">
-                    <label>Nome</label>
+                    <label>E-mail</label>
                     <InputText @bind-Value="Usuario.Email" class="form-control" />
                     <ValidationMessage For="@(() => Usuario.Email)" />
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col">
-                    <label>Numero de identificação</label>
+                    <label>Senha</label>
                     <InputText @bind-Value="Usuario.Senha" class="form-control" />
                     <ValidationMessage For="@(() => Usuario.Senha)" />
                 </div>
@@ -37,32 +37,27 @@
     private UsuarioDto Usuario = new UsuarioDto();
 
     private EditContext editContext { get; set; }
-    private List<Petshop> petshopList = new List<Petshop>();
-
-
-    public string Text { get; set; }
-
 
     private async Task HandleValidSubmit()
     {
-        var teste = await Http.PostAsJsonAsync("/api/Usuarios", Usuario);
-        NavigationManager.NavigateTo("/Usuario/List");
+        var teste = await Http.PostAsJsonAsync("/api/Usuarios/login", Usuario);
+        NavigationManager.NavigateTo("/Cliente/Usuario");
 
+        if(teste.StatusCode == System.Net.HttpStatusCode.OK) {
+
+            Console.WriteLine("Login efetuado com sucesso");
+        }
+        else
+        {
+            Console.WriteLine("Login não efetuado");
+
+        }
     }
 
     private void HandleReset()
     {
         Usuario = new UsuarioDto();
         editContext = new EditContext(Usuario);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var petshop = await Http.GetFromJsonAsync<List<Petshop>>("/api/Petshops");
-        foreach (var item in petshop)
-        {
-            petshopList.Add(item);
-        }
     }
 
 

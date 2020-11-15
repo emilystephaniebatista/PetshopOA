@@ -86,6 +86,23 @@ namespace Petshop.Server.Controllers
             return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
         }
 
+        //Aqui ele esta verificando se existe no banco o e-mail e senha
+        
+        [HttpPost("login")]
+        public async Task<ActionResult<Usuario>> Login(UsuarioDto usuario)
+        {
+            var loginusuario = await _context.Usuario.FirstOrDefaultAsync(u => usuario.Email == u.Email && usuario.Senha == u.Senha);
+
+            if (loginusuario == null) {
+
+                return Unauthorized();
+            }
+            else{
+
+                return Ok();
+            }
+        }
+
         // DELETE: api/Usuarios/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Usuario>> DeleteUsuario(int id)
