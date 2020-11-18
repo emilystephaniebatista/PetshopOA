@@ -85,12 +85,19 @@ namespace Petshop.Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+        public async Task<ActionResult<Usuario>> PostUsuario(UsuarioDto usuario)
         {
-            _context.Usuario.Add(usuario);
+            var usuario2 = new Usuario
+            {
+                AutorizacaoId = int.Parse(usuario.AutorizacaoId),
+                Email = usuario.Email,
+                Senha = usuario.Senha
+            };
+
+            _context.Usuario.Add(usuario2);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
+            return CreatedAtAction("GetUsuario", new { id = usuario2.Id }, usuario2);
         }
 
         //Aqui ele esta verificando se existe no banco o e-mail e senha
