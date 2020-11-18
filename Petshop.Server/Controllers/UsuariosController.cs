@@ -46,14 +46,21 @@ namespace Petshop.Server.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(int id, Usuario usuario)
+        public async Task<IActionResult> PutUsuario(int id, UsuarioDto usuario)
         {
-            if (id != usuario.Id)
+            var usuario2 = new Usuario
+            {
+                AutorizacaoId = int.Parse(usuario.AutorizacaoId),
+                Email = usuario.Email,
+                Senha = usuario.Senha                
+            };
+
+            if (id != usuario2.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(usuario).State = EntityState.Modified;
+            _context.Entry(usuario2).State = EntityState.Modified;
 
             try
             {
